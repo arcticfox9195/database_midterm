@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>活動內容修改</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 28px;
+            margin-top: 20px;
+        }
+
+        .container {
+            margin: 50px auto;
+            width: 60%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .input-group input, 
+        .input-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .input-group button {
+            width: 45%; /* Set width for the buttons */
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #confirm-btn {
+            background-color: #3498db;
+            color: white;
+            margin-right: 5%; /* Separate buttons */
+        }
+
+        #cancel-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .input-group button:hover {
+            filter: brightness(90%); /* Add hover effect */
+        }
+
+        .home-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .flash-messages {
+            position: fixed;
+            top: 20px; 
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 300px; 
+            z-index: 9999; 
+        }
+
+        .flash-success, .flash-error {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            opacity: 0.6; /* 调整透明度 */
+        }
+
+        .flash-success {
+            background-color: #4CAF50; /* 成功提示框的背景颜色 */
+            color: white; /* 成功提示框的文字颜色 */
+        }
+
+        .flash-error {
+            background-color: #f44336; /* 错误提示框的背景颜色 */
+            color: white; /* 错误提示框的文字颜色 */
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="title">{{activityName}}</div>
+    <div class="container">
+        <form id = 'MA' method="post">
+            
+
+            <div class="input-group">
+                <label for="activity-description">活動介紹</label>
+                <textarea id="activity-description" name="activity-description" rows="4" required>{{ default_description }}</textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="image-download-link">更新圖片下載連結</label>
+                <input type="text" id="image-download-link" name="image-download-link" required>
+            </div>
+
+            <div class="input-group">
+                <label for="image-save-name">圖片儲存名稱</label>
+                <input type="text" id="image-save-name" name="image-save-name" value="{{ default_image }}"required>
+            </div>
+
+            <div class="input-group">
+                <label for="activity-time">活動時間</label>
+                <input type="text" id="activity-time" name="activity-time" value="{{ default_time }}" required>
+            </div>
+
+            <div class="input-group">
+                <label for="activity-location">活動地點</label>
+                <input type="text" id="activity-location" name="activity-location" value="{{ default_location }}" required>
+            </div>
+
+            <div class="input-group">
+                <label for="activity-limit">活動限制人數</label>
+                <input type="number" id="activity-limit" name="activity-limit" value="{{ default_limit }}" required>
+            </div>
+
+            <div class="input-group">
+                <button type="button" id="confirm-btn">確認修改</button>
+                <button type="button" id="cancel-btn">取消</button>
+            </div>
+        </form>
+    </div>
+    <script>
+    
+        document.getElementById('confirm-btn').addEventListener('click', function() {
+            document.getElementById('MA').submit();
+        });
+    
+        document.getElementById('cancel-btn').addEventListener('click', function() {
+            window.location.href = "/admin";
+        });
+    </script>
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }}">
+                        {{ message }}
+                        <script>
+
+                            setTimeout(function() {
+                                document.querySelector('.flash-{{ category }}').style.display = 'none';
+                            }, 5000);
+                        </script>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

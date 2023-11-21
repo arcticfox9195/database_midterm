@@ -1,0 +1,112 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>Login Page</title>
+      <link rel="stylesheet"  href="../static/loginpage.css" >
+  </head>
+  <body>
+      <div class="wrapper">
+          <div class="title-text">
+            <div class="title login">Login Form</div>
+            <div class="title signup">Signup Form</div>
+          </div>
+          <div class="form-container">
+            <div class="slide-controls">
+              <input type="radio" name="slide" id="login" checked>
+              <input type="radio" name="slide" id="signup">
+              <label for="login" class="slide login">Login</label>
+              <label for="signup" class="slide signup">Signup</label>
+              <div class="slider-tab"></div>
+            </div>
+            <div class="form-inner">
+              <form action="#" class="login" method="post">
+                <pre>
+                </pre>
+                <div class="field">
+                  <input type="text" placeholder="Username" name = "loginName" required>
+                </div>
+                <div class="field">
+                  <input type="password" placeholder="Password" name = "loginPass" required>
+                </div>
+                <div class="pass-link"><a href="/resetPassword">Forgot password?</a></div>
+                <div class="field btn">
+                  <div class="btn-layer"></div>
+                  <input type="submit" id = "LoginBt" value="Login">
+                </div>
+                <div class="signup-link">Create an account <a href="">Signup now</a></div>
+              </form>
+              <form action="#" class="signup" method="post">
+                <div class="field">
+                  <input type="text" placeholder="Username" name = "SignName" required>
+                </div>
+                <div class="field">
+                  <input type="text" placeholder="Email Address" name = "SignEmail" required>
+                </div>
+                <div class="field">
+                  <input type="password" placeholder="Password" Name = "SignPass" required>
+                </div>
+                <div class="field">
+                  <input type="password" placeholder="Confirm password" name = "ConfirmPass" required>
+                </div>
+                <div class="field btn">
+                  <div class="btn-layer"></div>
+                  <input type="submit" value="Signup">
+                </div>
+                <div class="signup-link">Already have an account? <a href="">Login</a></div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              {% for category, message in messages %}
+                  <div class="flash-{{ category }}">
+                      {{ message }}
+                      <script>
+                        setTimeout(function() {
+                            document.querySelector('.flash-{{ category }}').style.display = 'none';
+                        }, 5000);
+                    </script>
+                  </div>
+              {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <script>
+          document.querySelectorAll('form').forEach(form => {
+          form.addEventListener('submit', function(event) {
+              event.preventDefault();
+              const formData = new FormData(form);
+              fetch('/login', {
+                  method: 'POST',
+                  body: formData
+              })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.status === 'success') {
+                    
+                      alert(data.message); 
+                      if (data.action === 'signup') {
+                        window.location.reload();  
+                    } 
+                     if(data.action === 'adminlogin'){
+                      window.location.href = '/admin'
+                    }
+                      if(data.action === 'userlogin'){
+                      window.location.href = '/activities'
+                    }
+                  } else {
+                      alert(data.message); 
+                  }
+              })
+              .catch(error => {
+                  alert('An error occurred while processing your request.');
+                  console.error('Error:', error);
+              });
+          });
+      });
+      </script>
+  </body>
+  <script src = '../static/loginpage.js'></script>
+  </html>
+

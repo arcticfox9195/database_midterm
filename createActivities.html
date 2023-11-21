@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Create a New Activity</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 28px;
+            margin-top: 20px;
+        }
+
+        .container {
+            margin: 50px auto;
+            width: 60%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .input-group input[type="submit"] {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .input-group input[type="submit"]:hover {
+            background-color: #297fb8;
+        }
+
+        .home-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <a class="home-link" href="/admin">首頁</a>
+    <div class="title">Create a New Activity</div>
+    <div class="container">
+        <form id = 'CA' method="post">
+            <div class="input-group">
+                <label for="activity-name">活動名稱</label>
+                <input type="text" id="activity-name" name="activity-name" required>
+            </div>
+
+            <div class="input-group">
+                <label for="activity-description">活動介紹</label>
+                <textarea id="activity-description" name="activity-description" rows="4" required></textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="image-download-link">圖片下載連結</label>
+                <input type="text" id="image-download-link" name="image-download-link" required>
+            </div>
+
+            <div class="input-group">
+                <label for="image-save-name">圖片儲存名稱</label>
+                <input type="text" id="image-save-name" name="image-save-name" required>
+            </div>
+
+            <div class="input-group">
+                <label for="activity-time">活動時間</label>
+                <input type="text" id="activity-time" name="activity-time" required>
+            </div>
+
+            <div class="input-group">
+                <label for="activity-location">活動地點</label>
+                <input type="text" id="activity-location" name="activity-location" required>
+            </div>
+
+            <div class="input-group">
+                <label for="activity-limit">活動限制人數</label>
+                <input type="number" id="activity-limit" name="activity-limit" required>
+            </div>
+
+            <div class="input-group">
+                <input type="submit" value="提交">
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('CA').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(document.getElementById('CA'));
+            fetch('/admin/createActivities', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message); 
+                    window.location.href = "/admin";
+                } else {
+                    alert(data.message); 
+                }
+            })
+
+            .catch(error => {
+                alert('An error occurred while processing your request.');
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

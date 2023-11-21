@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>活動報名網頁</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .welcome-message {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .radio-container {
+            display: flex;
+            background-color: #8e44ad; /* Set background color to purple */
+            padding: 10px;
+        }
+
+        .radio-option {
+            display: none;
+        }
+
+        .radio-label {
+            background-color: #8e44ad;
+            color: #fff;
+            padding: 10px;
+            margin-right: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            user-select: none;
+        }
+
+        .radio-option:checked + .radio-label {
+            background-color: #fff;
+            color: #333;
+        }
+
+        .event-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .event {
+            width: calc(20% - 20px);
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s;
+        }
+
+        .event:hover {
+            transform: translateY(-5px);
+        }
+
+        .event img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .event h2 {
+            height: 50px;
+            font-size: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .btn-signup {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-signup:hover {
+            background-color: #2980b9;
+        }
+
+        .icons {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+        }
+
+        .icons i {
+            font-size: 24px;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .icons i:hover {
+            transform: scale(1.1);
+        }
+
+        .footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .logout-link {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+
+        .typing {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 1px solid white;
+            animation: typing 3s steps(40, end), blink-caret 0.5s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        .content-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .content {
+            width: calc(20% - 20px);
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s;
+        }
+        .content.visible {
+            display: block;
+        }
+        .content-container {
+            display: none;
+        }
+
+        .content-container.visible {
+            display: flex;
+        }
+        
+        .content-container.visible {
+            display: flex;
+            justify-content: center; /* Center the content */
+        }
+
+        #content-container3 .content {
+            width: 80%; /* Set the content width to 80% */
+            margin: 20px; /* Add some margin for spacing */
+        }
+
+        #content-container3 .content label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        #content-container3 .content input {
+            width: calc(100% - 16px); /* Adjusted width for padding */
+            padding: 8px;
+            margin-bottom: 16px;
+            border-radius: 4px; /* Add rounded corners */
+        }
+
+        #content-container3 .content button.btn-save {
+            background-color: #1e3799; /* Deep blue color */
+            color: #fff;
+            border: none;
+            padding: 8px 16px; /* Adjusted padding */
+            border-radius: 4px; /* Add rounded corners */
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #content-container3 .content button.btn-save:hover {
+            background-color: #0c2461; /* Darker shade on hover */
+        }
+
+        #content-container2 .content {
+            width: 80%; /* Adjust the width to your preference */
+        }
+        #content-container2 table {
+            width: 100%;
+        }
+
+        #content-container2 table th,
+        #content-container2 table td {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="welcome-message typing">Welcome, {{username}}</div>
+        <a href="/login" class="logout-link">登出</a>
+    </div>
+    <div class="radio-container">
+        <input type="radio" class="radio-option" name="radio-group" id="radio1" checked>
+        <label for="radio1" class="radio-label">活動報名</label>
+
+        <input type="radio" class="radio-option" name="radio-group" id="radio2">
+        <label for="radio2" class="radio-label">確認已報名活動</label>
+
+        <input type="radio" class="radio-option" name="radio-group" id="radio3">
+        <label for="radio3" class="radio-label">個人資料</label>
+    </div>
+    <div class="content-container visible" id="content-container1">
+        {% for activity in activities %}
+        <div class="content">
+            <img src="{{ url_for('static', filename=activity[0]) }}" alt="Activity Image">
+            <h2>{{ activity[1] }}</h2>
+            <button class="btn-signup" data-activity-id = "{{ activity[1] }}">報名活動 </button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="content-container" id="content-container2">
+        <div class="content">
+            <p>{{username}}, 以下是您報名的活動</p>
+    
+            <table>
+                <tr>
+                    <th>活動名稱</th>
+                    <th>時間</th>
+                    <th>地點</th>
+                    <th>操作</th>
+                </tr>
+                {% for act in acts %}
+                    <tr>
+                        <td>{{ act[0] }}</td>
+                        <td>{{ act[1] }}</td>
+                        <td>{{ act[2] }}</td>
+                        <td><a href="/cancel_signup?activityId={{ act[0] }}">取消報名</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="content-container" id="content-container3">
+        <div class="content">
+            <label for="name">姓名:</label>
+            <input type="text" id="name" name="name" placeholder="請輸入姓名" value="{{ default_n }}">
+    
+            <label for="phone">電話:</label>
+            <input type="text" id="phone" name="phone" placeholder="請輸入電話" value="{{ default_p }}">
+    
+            <label for="email">電子信箱:</label>
+            <input type="text" id="email" name="email" placeholder="請輸入電子信箱" value="{{ default_m }}">
+    
+            <label for="idNumber">身份證字號:</label>
+            <input type="text" id="idNumber" name="idNumber" placeholder="請輸入身份證字號" value="{{ default_id }}">
+    
+            <label for="address">居住地址:</label>
+            <input type="text" id="address" name="address" placeholder="請輸入居住地址" value="{{ default_a }}">
+    
+            <label for="birthdate">出生年月日:</label>
+            <input type="text" id="birthdate" name="birthdate" placeholder="請輸入出生年月日" value="{{ default_b }}">
+    
+            <button class="btn-save">確認無誤，儲存資料</button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <!-- Additional footer content if needed -->
+    </div>
+    <script>
+        const signupButtons = document.querySelectorAll('.btn-signup');
+
+        signupButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const activityId = this.getAttribute('data-activity-id');
+                // Redirect to '/signup' with activityId as a query parameter
+                window.location.href = '/signup?activityId=' + activityId;
+            });
+        });
+        const radioOptions = document.querySelectorAll('.radio-option');
+        const contentContainers = document.querySelectorAll('.content-container');
+
+        radioOptions.forEach(option => {
+            option.addEventListener('change', function () {
+                // Hide all content containers
+                contentContainers.forEach(container => {
+                    container.classList.remove('visible');
+                });
+
+                // Show the selected content container
+                const selectedContainerId = `content-container${option.id.replace('radio', '')}`;
+                const selectedContainer = document.getElementById(selectedContainerId);
+                
+                if (selectedContainer) {
+                    selectedContainer.classList.add('visible');
+                }
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            const btnSave = document.querySelector('.btn-save');
+
+        btnSave.addEventListener('click', function() {
+            // Collect data from input fields
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const idNumber = document.getElementById('idNumber').value;
+            const address = document.getElementById('address').value;
+            const birthdate = document.getElementById('birthdate').value;
+
+            // Prepare data to be sent to the server
+            const data = {
+                name: name,
+                phone: phone,
+                email: email,
+                idNumber: idNumber,
+                address: address,
+                birthdate: birthdate
+            };
+
+            // Send data to the server
+            fetch('/ChangeInfo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Display a success message
+                    alert('資料修改成功！');
+                    location.reload();  // Reload the page after successful modification
+                } else {
+                    alert('資料修改失敗！');  // Display an error message
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+            const welcomeMessage = document.querySelector('.welcome-message');
+            const username = "{{username}}";
+            let currentIndex = 0;
+
+            function typeWriter() {
+                if (currentIndex < username.length) {
+                    welcomeMessage.innerHTML = 'Welcome, ' + username.substring(0, currentIndex + 1);
+                    currentIndex++;
+                    setTimeout(typeWriter, 100);
+                } else {
+                    welcomeMessage.classList.remove('typing');
+                }
+            }
+
+            welcomeMessage.classList.add('typing');
+            typeWriter();
+        });
+    </script>
+</body>
+</html>

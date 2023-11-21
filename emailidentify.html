@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Code</title>
+    <link rel="stylesheet" href="../static/loginpage.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title-text">
+            <div class="title reset-password">Verify Code</div>
+        </div>
+        <div class="form-container">
+            <div class="form-inner">
+                <form id="verif" action="#" class="verify-code" method="post">
+                    <pre></pre>
+                    <div class="field">
+                        <p>We have sent a verification code to your email: <strong>{{ email }}</strong></p>
+                    </div>
+                    <div class="field">
+                        <input type="text" placeholder="Verification Code" name="verificationCode" required>
+                    </div>
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Verify">1
+                    </div>
+                    <div class="field">
+                        <button class="btn-resend-email" type="button" onclick="resendVerification()">Resend verification code</button>
+                    </div>
+                    <div class="pass-link"><a href="/login">Remembered Password? Login</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('verif').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(document.getElementById('verif'));
+            fetch('/resetPassword/identify', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = '/resetPassword/reset';
+                } else {
+                    alert(data.message); 
+                }
+            })
+            .catch(error => {
+                alert('An error occurred while processing your request.');
+                console.error('Error:', error);
+            });
+        });
+    </script>
+    <script>
+        function resendVerification() {
+            fetch('/resetPassword/resend', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    window.location.href = '/resetPassword/identify';
+                }
+                
+
+            })
+            .catch(error => {
+                alert('An error occurred while processing your request.');
+                console.error('Error:', error);
+            });
+        }
+    </script>
+    
+</body>
+</html>
+

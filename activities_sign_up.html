@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .container {
+            margin: 50px auto;
+            width: 60%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: calc(100% - 20px);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .input-group button {
+            width: 45%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #confirm-btn {
+            background-color: #3498db;
+            color: white;
+            margin-right: 5%;
+        }
+
+        #cancel-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .input-group button:hover {
+            filter: brightness(90%);
+        }
+
+        .home-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 300px;
+            z-index: 9999;
+        }
+
+        .flash-success,
+        .flash-error {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            opacity: 0.6;
+        }
+
+        .flash-success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .flash-error {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="input-group">
+            
+            <img src="{{ url_for('static', filename=image_url) }}" alt="Activity Image" style="width: 100%; border-radius: 8px;">
+        
+            <label for="activity-name">活動名稱</label>
+            <div>{{ activityName }}</div>
+        
+            <label for="activity-description">活動介紹</label>
+            <div>{{ activityDescription }}</div>
+        
+            <label for="activity-time">活動時間</label>
+            <div>{{ activityTime }}</div>
+        
+            <label for="activity-location">活動地點</label>
+            <div>{{ activityLocation }}</div>
+        
+            <label for="current-participants">目前報名人數</label>
+            <div>{{ currentParticipants }}/{{activityLimit}}</div>
+        </div>
+
+        <form id='MA' method="post">
+            <div class="input-group">
+                <label for="name">姓名</label>
+                <input type="text" id="name" name="name" value="{{ nameValue }}" placeholder="請輸入姓名" required>
+            </div>
+
+            <div class="input-group">
+                <label for="phone">電話</label>
+                <input type="text" id="phone" name="phone" value="{{ phoneValue }}" placeholder="請輸入電話" required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">電子信箱</label>
+                <input type="text" id="email" name="email" value="{{ emailValue }}" placeholder="請輸入電子信箱" required>
+            </div>
+
+            <div class="input-group">
+                <label for="idNumber">身份證字號</label>
+                <input type="text" id="idNumber" name="idNumber" value="{{ idNumberValue }}" placeholder="請輸入身份證字號" required>
+            </div>
+
+            <div class="input-group">
+                <label for="address">居住地址</label>
+                <input type="text" id="address" name="address" value="{{ addressValue }}" placeholder="請輸入居住地址" required>
+            </div>
+
+            <div class="input-group">
+                <label for="birthdate">出生年月日</label>
+                <input type="text" id="birthdate" name="birthdate" value="{{ birthdateValue }}" placeholder="請輸入出生年月日" required>
+            </div>
+
+            <div class="input-group">
+                <button type="button" id="confirm-btn">確認報名</button>
+                <button type="button" id="cancel-btn">回首頁</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('confirm-btn').addEventListener('click', function () {
+            document.getElementById('MA').submit();
+        });
+
+        document.getElementById('cancel-btn').addEventListener('click', function () {
+            window.location.href = "/activities";
+        });
+    </script>
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }}">
+                        {{ message }}
+                        <script>
+                            setTimeout(function () {
+                                document.querySelector('.flash-{{ category }}').style.display = 'none';
+                            }, 5000);
+                        </script>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+
+</html>

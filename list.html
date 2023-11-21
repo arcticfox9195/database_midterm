@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+    <style>
+        /* Your existing styles here... */
+
+        #content-container4 .content {
+            width: 80%;
+            margin: 20px;
+        }
+
+        #content-container4 table {
+            width: 100%;
+        }
+
+        #content-container4 table th,
+        #content-container4 table td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your existing body content... -->
+
+    <div class="content-container" id="content-container4">
+        <div class="content">
+            <h2>活動: {{ activityname }}</h2>
+    
+            <table>
+                <tr>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>ID</th>
+                    <th>Date of Birth</th>
+                </tr>
+                {% for partInfo in participants %}
+                <tr>
+                    <td>{{ partInfo[0] }}</td>
+                    <td>{{ partInfo[1] }}</td>
+                    <td>{{ partInfo[2] }}</td>
+                    <td>{{ partInfo[3] }}</td>
+                    <td>{{ partInfo[4] }}</td>
+                    <td>{{ partInfo[5] }}</td>
+                    <td>{{ partInfo[6] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <!-- Your existing content containers... -->
+
+</body>
+</html>
